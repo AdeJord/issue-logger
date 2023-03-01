@@ -11,7 +11,9 @@ const Form = () => {
     issue: string;
     prevState: null;
     id: string;
-    placeholder: string
+    placeholder: string;
+    toUppercase: string;
+    e: any
   }
 
   const [regNo, setRegNo] = useState<FormData | null>(null);
@@ -29,6 +31,7 @@ const Form = () => {
 
   const submitHandler = () => {
     console.log(`Reg - ${regNo}: Issue - ${issue}`)
+    alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
   }
 
   return (
