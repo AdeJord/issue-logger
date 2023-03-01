@@ -14,6 +14,7 @@ const IssueInput = ( {onChange}, props: any) => {
       fullWidth={true}
       rows={props.rows}
       onChange={onChange}
+      placeholder='Enter Issue here'
       />
     </div>
   );

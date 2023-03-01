@@ -33,13 +33,15 @@ const Form = () => {
 
   return (
     <div>
+      <form>
       <h1>Issue Logger</h1>
       <h4>Registration Number</h4>
       <RegInput onChange={RegInputHandler} />
       <IssueInput onChange={IssueInputHandler} />
-      <button onClick={submitHandler}>
+      <button onClick={submitHandler} type='submit'>
         Submit
       </button>
+      </form>
     </div>
   );
 };
