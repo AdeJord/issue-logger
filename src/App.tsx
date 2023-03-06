@@ -1,64 +1,30 @@
-import "./App.css";
-import React, { useState } from "react";
-// The below import was auto imported when I added <Container>
-// import { Container } from "@mui/system";
-import Container from "@mui/material/Container";
-import { makeStyles } from "@mui/styles";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import RegInput from "./components/RegInput";
-import IssueInput from "./components/IssueInput";
+import Home from "./pages/Home";
 import Form from "./components/Form";
+import MainNavigation from "./navigation/MainNavigation";
+import AllIssues from "./pages/AllIssues";
+import SignIn from "./pages/SignIn";
 
-const useStyles = makeStyles({
-  root: {
-    height: "auto",
-    padding: "10px",
-    textAlign: "center",
-    flexDirection: "column",
-  },
-  container: {
-    height: "auto",
-    width: "100vw",
-    display: "flex",
-    textAlign: "center",
-    padding: '25px'
-  },
-  header: {
-    fontSize: "6vw",
-    textAlign: "center",
-    paddingBottom: "5px",
-    flexDirection: "column",
-  },
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    height: "auto",
-    padding: "25px",
-  },
-  button: {
-    marginTop: "115px",
-    fontSize: "17px",
-  },
-  text: {
-    height: "auto",
-    fontSize: "15px",
-  },
-});
+import "./App.css";
 
 function App() {
 
-  const classes = useStyles();
   return (
-
-    <Container
-      className={classes.container}
-      disableGutters={true}
-      maxWidth="sm"
-    >
-      <Form />
-    </Container>
-
+    <>
+    <BrowserRouter>
+    <MainNavigation />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/pages/LogIssue' element={<Form />} />
+        <Route path='/pages/AllIssues' element={<AllIssues />} />
+        <Route path='/pages/SignIn' element={<SignIn />} />
+      </Routes>
+    </BrowserRouter>
+    </>
   );
+
 }
 
 export default App;

@@ -1,13 +1,53 @@
 import { useState } from "react";
 import RegInput from "./RegInput";
 import IssueInput from "./IssueInput";
+import Container from "@mui/material/Container";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  root: {
+    height: "auto",
+    padding: "10px",
+    textAlign: "center",
+    flexDirection: "column",
+  },
+  container: {
+    height: "auto",
+    width: "100vw",
+    display: "flex",
+    textAlign: "center",
+    padding: '95px'
+  },
+  header: {
+    fontSize: "6vw",
+    textAlign: "center",
+    paddingBottom: "5px",
+    flexDirection: "column",
+  },
+  main: {
+    display: "flex",
+    flexDirection: "column",
+    height: "auto",
+    padding: "25px",
+  },
+  button: {
+    marginTop: "115px",
+    fontSize: "17px",
+  },
+  text: {
+    height: "auto",
+    fontSize: "15px",
+  },
+});
 
 //submit handler needed which will save all of the inputs into somewhere
 
 const Form = () => {
 
+    const classes = useStyles();
+
   interface FormData {
-    regNo: string;
+    // regNo: string;
     issue: string;
     prevState: null;
     id: string;
@@ -30,14 +70,17 @@ const Form = () => {
   }
 
   const submitHandler = () => {
-    console.log(`Reg - ${regNo}: Issue - ${issue}`)
+    // console.log(`Reg - ${regNo}: Issue - ${issue}`)
     alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
   }
 
   return (
-    <div>
+    <Container
+      className={classes.container}
+      disableGutters={true}
+      maxWidth="sm"
+    >
       <form>
-      <h1>Issue Logger</h1>
       <h4>Registration Number</h4>
       <RegInput onChange={RegInputHandler} />
       <IssueInput onChange={IssueInputHandler} />
@@ -45,7 +88,7 @@ const Form = () => {
         Submit
       </button>
       </form>
-    </div>
+    </Container>
   );
 };
 
