@@ -18,16 +18,17 @@ const useStyles = makeStyles({
   },
 });
 
-const RegInput = ({onChange}) => {
+const RegInput = ({ onChange }) => {
   const classes = useStyles();
 
   return (
-      <input
+    <input
       onChange={onChange}
-        required
-        className={classes.input}
-        placeholder="Enter Reg"
-      />
+      required
+      className={classes.input}
+      placeholder="Enter Reg"
+      type='text'
+    />
 
   );
 };

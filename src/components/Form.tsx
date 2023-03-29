@@ -3,6 +3,10 @@ import RegInput from "./RegInput";
 import IssueInput from "./IssueInput";
 import Container from "@mui/material/Container";
 import { makeStyles } from "@mui/styles";
+import axios from "axios";
+
+declare var sendRequest: any
+
 
 const useStyles = makeStyles({
   root: {
@@ -40,24 +44,23 @@ const useStyles = makeStyles({
   },
 });
 
-//submit handler needed which will save all of the inputs into somewhere
-
 const Form = () => {
-
-    const classes = useStyles();
+  const classes = useStyles();
 
   interface FormData {
-    // regNo: string;
+    regNo: string;
     issue: string;
     prevState: null;
     id: string;
     placeholder: string;
     toUppercase: string;
     e: any
+    value: string
   }
 
   const [regNo, setRegNo] = useState<FormData | null>(null);
   const [issue, setIssue] = useState<FormData | null>(null);
+  const formData = [regNo, issue]
 
   const RegInputHandler = (e) => {
     setRegNo(e.currentTarget.value)
@@ -69,9 +72,24 @@ const Form = () => {
     // console.log({ issue })
   }
 
-  const submitHandler = () => {
-    // console.log(`Reg - ${regNo}: Issue - ${issue}`)
-    alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
+  const submitHandler = async (e) => {
+
+    // e.preventDefault()
+
+    const connString : any = process.env.REACT_APP_BACKEND_URL
+    
+    try {
+      // alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
+      // console.log(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
+      const data = {regNo, issue}
+      const response = axios.post(connString + '/issues', data)
+      .then((response) => {
+        // console.log(response)
+      }).catch(err => console.log(err))
+    }
+    catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -81,12 +99,12 @@ const Form = () => {
       maxWidth="sm"
     >
       <form>
-      <h4>Registration Number</h4>
-      <RegInput onChange={RegInputHandler} />
-      <IssueInput onChange={IssueInputHandler} />
-      <button onClick={submitHandler} type='submit'>
-        Submit
-      </button>
+        <h4>Registration Number</h4>
+        <RegInput onChange={RegInputHandler} />
+        <IssueInput onChange={IssueInputHandler} />
+        <button onClick={submitHandler} type='submit'>
+          Submit
+        </button>
       </form>
     </Container>
   );

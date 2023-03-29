@@ -26,7 +26,7 @@ const NavLinks = (props) => {
             </li>
             <li>
                 <NavLink to="../pages/SignIn">
-                    SIGN IN
+                    SIGN IN 
                 </NavLink>
             </li>
         </ul>
