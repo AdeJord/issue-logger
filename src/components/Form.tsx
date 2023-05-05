@@ -45,6 +45,7 @@ const useStyles = makeStyles({
 });
 
 const Form = () => {
+
   const classes = useStyles();
 
   interface FormData {
@@ -74,9 +75,9 @@ const Form = () => {
 
   const submitHandler = async (e) => {
 
-    // e.preventDefault()
+    e.preventDefault()
 
-    const connString : any = process.env.REACT_APP_BACKEND_URL
+    const connString: any = process.env.REACT_APP_BACKEND_URL
     
     try {
       // alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
@@ -84,6 +85,7 @@ const Form = () => {
       const data = {regNo, issue}
       const response = axios.post(connString + '/issues', data)
       .then((response) => {
+        // console.log(response)
         // console.log(response)
       }).catch(err => console.log(err))
     }

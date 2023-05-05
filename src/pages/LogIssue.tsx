@@ -1,8 +1,8 @@
 import React from 'react'
 import { makeStyles } from "@mui/styles";
 import Container from "@mui/material/Container";
-
 import Form from '../components/Form'
+// import styles from '../'
 
 const useStyles = makeStyles({
   container: {
@@ -20,9 +20,8 @@ const LogIssue = () => {
 
   return (
     <Container className={classes.container}>
-      <div>
+      Log Issue
         <Form />
-      </div>
     </Container>
   )
 }

@@ -7,9 +7,13 @@ import MainHeader from './MainHeader'
 import Backdrop from './Backdrop'
 import SideDrawer from './SideDrawer'
 import NavLinks from './NavLinks'
+import { useStyles } from "../styles"
 
 
 const MainNavigation = (props) => {
+
+    const classes = useStyles();
+
     const [drawerIsOpen, setDrawerIsOpen] = useState(false)
     const openDrawerHandler = () => {
         setDrawerIsOpen(true);
@@ -29,12 +33,13 @@ const MainNavigation = (props) => {
             </SideDrawer>
 
             <MainHeader>
-                <button className="main-navigation__menu-btn" onClick={openDrawerHandler}>
-                    MENU
-                </button>
-                <h1 className="main-navigation__title">
+
+                <h1 className={classes.mainHeader}>
                     <Link to="/">Issue Logger</Link>
                 </h1>
+                <button className={classes.burgerButton} onClick={openDrawerHandler}>
+                    MENU
+                </button>
                 <nav className="main-navigation__header-nav">
                     <NavLinks />
                 </nav>

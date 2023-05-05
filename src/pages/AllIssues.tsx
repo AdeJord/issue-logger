@@ -4,18 +4,28 @@ import Container from "@mui/material/Container";
 import axios from "axios";
 
 const useStyles = makeStyles({
-  container: {
+  root: {
+    dipslay: 'flex',
+    flexDirection: 'column',
     height: "auto",
     width: "auto",
     display: "flex",
     textAlign: "center",
-    paddingTop: '90px'
+    paddingTop: '70px'
+  },
+  container: {
+    dipslay: 'flex',
+    flexDirection: 'column',
+    height: "auto",
+    width: "auto",
+    display: "flex",
+    textAlign: "center",
   },
   tableMain: {
     height: "auto",
     width: "auto",
     border: '1px solid black',
-    borderCollapse: 'collapse'
+    borderCollapse: 'collapse',
   },
   tableHead: {
     background: 'lightgray',
@@ -62,12 +72,13 @@ const AllIssues = () => {
 
   return (
     <Container
-      className={classes.container}
+      className={classes.root}
       disableGutters={true}
       maxWidth="sm"
     >
 
       <p>All Issues</p>
+      <div className={classes.container}>
       <table className={classes.tableMain}>
         <thead className={classes.tableHead}>
           <tr>
@@ -83,7 +94,9 @@ const AllIssues = () => {
             </tr>)}
         </tbody>
       </table>
+      </div>
       <button className={classes.button} onClick={() => alert('This function has not yet been created!')}>Export to CSV</button>
+
     </Container>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from "@mui/styles";
 import Container from "@mui/material/Container";
-import SignInForm from '../components/SignInForm'
+import SignUpForm from '../components/SignUpForm'
 
 const useStyles = makeStyles({
     container: {
@@ -13,16 +13,16 @@ const useStyles = makeStyles({
     },
   })
 
-const SignIn = () => {
+const SignUp = () => {
 
     const classes = useStyles()
 
     return (
         <Container className={classes.container}>
-            Sign In
-            <SignInForm />
+            Sign Up
+            <SignUpForm />
         </Container>
     )
 }
 
-export default SignIn
+export default SignUp
