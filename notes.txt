@@ -1,5 +1,15 @@
+
+POSTGRES CREATE TABLE :-
 postgres=# create table users 
 (user_id serial primary key, 
 username varchar (50) unique, 
 password varchar (50), 
 email varchar (255) unique);
+
+NEED TO 
+make 2 modals
+    Error modal 
+    and 
+    Modal
+
+     and a reusable button?
