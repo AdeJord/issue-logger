@@ -31,12 +31,15 @@ export const useStyles = makeStyles({
     mainHeader: {
       textAlign: 'center',
     },
-    burgerButton: {
+    menuButton: {
       display: "flex",
       flexDirection: "column",
       textAlign: 'right',
       alignContent: 'right',
-      marginLeft: '20vw'
+      marginLeft: '20vw',
+      '@media (min-width: 768px)' : {
+        display: 'none'
+      }
     },
     button: {
       marginTop: "115px",

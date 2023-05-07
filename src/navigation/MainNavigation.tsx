@@ -37,7 +37,7 @@ const MainNavigation = (props) => {
                 <h1 className={classes.mainHeader}>
                     <Link to="/">Issue Logger</Link>
                 </h1>
-                <button className={classes.burgerButton} onClick={openDrawerHandler}>
+                <button className={classes.menuButton} onClick={openDrawerHandler}>
                     MENU
                 </button>
                 <nav className="main-navigation__header-nav">
