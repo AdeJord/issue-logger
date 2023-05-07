@@ -12,4 +12,9 @@ make 2 modals
     and 
     Modal
 
+    Error modal will fire when form submitted with existing username or email.
+    Form will show when input is wrong with validators and will not allow submit
+    and
+    Modal will fire when user or issue is created.
+
      and a reusable button?
