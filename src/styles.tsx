@@ -33,10 +33,10 @@ export const useStyles = makeStyles({
     },
     menuButton: {
       display: "flex",
-      flexDirection: "column",
+      flexDirection: "row",
       textAlign: 'right',
       alignContent: 'right',
-      marginLeft: '20vw',
+      marginLeft: '30vw',
       '@media (min-width: 768px)' : {
         display: 'none'
       }
@@ -51,5 +51,8 @@ export const useStyles = makeStyles({
     },
     links: {
       textDecoration: 'none'
+    },
+    mainNavHeaderNav: {
+      display: 'none'
     }
   });

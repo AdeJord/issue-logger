@@ -19,16 +19,16 @@ const useStyles = makeStyles({
   },
 });
 
-interface FormData {
-    regNo: string;
-    issue: string;
-    prevState: null;
-    id: string;
-    placeholder: string;
-    toUppercase: string;
-    e: any
-    value: string
-  }
+// interface FormData {
+//     regNo: string;
+//     issue: string;
+//     prevState: null;
+//     id: string;
+//     placeholder: string;
+//     toUppercase: string;
+//     e: any
+//     value: string
+//   }
 
 const PasswordInput = ( {onChange}, props: any) => {
   const classes = useStyles();

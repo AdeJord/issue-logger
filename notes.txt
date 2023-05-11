@@ -10,11 +10,12 @@ NEED TO
 make 2 modals
     Error modal 
     and 
-    Modal
+    Success Modal
 
     Error modal will fire when form submitted with existing username or email.
-    Form will show when input is wrong with validators and will not allow submit
+    Form will show when input is invalid using validators and will not allow submit
+    (empty fields, short or password mismatch, bad email, swearing in username etc.. )
     and
-    Modal will fire when user or issue is created.
+    Success Modal will fire when user or issue is created.
 
      and a reusable button?

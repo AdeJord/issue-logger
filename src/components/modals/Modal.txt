@@ -1,0 +1,22 @@
+need to make ONE modal,
+
+if {error}
+
+else
+
+{success}
+
+Error Modal styling
+Success Modal styling
+
+const Modal
+
+ {error && 
+ error styled modal
+ }
+
+ {success && 
+ success styled modal
+ }
+
+ Also need to make a temp array to hold users and issues until can get backend server

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, MouseEvent } from "react";
 import PasswordInput from "./PasswordInput";
 import UsernameInput from "./UsernameInput";
 import EmailInput from "./EmailInput";
@@ -6,9 +6,10 @@ import Container from "@mui/material/Container";
 import ConfirmPassword from './ConfirmPassword'
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-import ErrorModal from './ErrorModal'
-import Modal from "./Modal/modal";
+import ErrorModalJS from './modals/ErrorModalJS'
+import SuccessModalJS from "./modals/SuccessModalJS";
 import UseModal from "./Modal/Usemodal";
+import Backdrop from '../navigation/Backdrop';
 
 declare var sendRequest: any
 
@@ -61,6 +62,11 @@ interface SignUpProps {
     e?: any
     value?: string
     user?: UserType
+    hide?: boolean
+    header?: string
+    content?: string
+    footer?: string
+    props?: any
 }
 
 type UserType = {
@@ -69,10 +75,13 @@ type UserType = {
     password: string
 }
 
-const SignUpForm: React.FC<SignUpProps> = (): JSX.Element => {
+const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
 
     const { show: show, toggle: _toggleOpen } = UseModal();
-    const [ showModal, setShowModal ] = useState(false)
+    // const [error, setError] = useState(false)
+    // const [success, setSuccess] = useState(false)
+
+    const [modals, setModals] = useState(0);
 
     const classes = useStyles();
 
@@ -104,7 +113,13 @@ const SignUpForm: React.FC<SignUpProps> = (): JSX.Element => {
         setEmail(e.currentTarget.value)
         // console.log({ Password })
     }
-    
+
+    const handleModalClose = () => {
+        setModals(0);
+        console.log('Close Clicked')
+    }
+
+
     const submitHandler = async (e) => {
 
         e.preventDefault()
@@ -113,19 +128,18 @@ const SignUpForm: React.FC<SignUpProps> = (): JSX.Element => {
         //NEED TO CHECK ALL FIELDS ARE COMPLETED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         try {
             if (password === confirmPassword) {
-                //need to stop send if passwords no NOT match
-                console.log('correct')
                 const data = { username, password, email }
                 const response = axios.post(connString + '/users', data)
                     .then((response) => {
-                        console.log(response)
-                        console.log(username)
+                        // console.log(response)
+                        // console.log(username)
                     }).catch(err => console.log(err))
+                setModals(1)
+                console.log('Success')
             } else {
-                //THIS BIT WORKS.. NEED TO ADD MODAL SAYING PASSWORDS DONT MATCH! 
-                _toggleOpen()
-                setShowModal(true)
-                // setError(true)
+                setModals(2)
+                console.log('Error')
+
             }
         }
         catch (err) {
@@ -139,24 +153,37 @@ const SignUpForm: React.FC<SignUpProps> = (): JSX.Element => {
             disableGutters={true}
             maxWidth="sm"
         >
-            <Modal
-                show={show}
-                hide={_toggleOpen}
-                title="Passwords do not match."
-                content="Which one do you want?  They are both different!  Try again..."
-            />
+            {modals === 2 &&
+                <>
+                    <Backdrop onClick={handleModalClose} />
+                    <ErrorModalJS
+                        header="Passwords do not match."
+                        content="Which one do you want?  They are both different!  Try again..."
+                        onClick={handleModalClose}
+                    />
+                </>
+            }
+            {modals === 1 &&
+                <>
+                    {/* this needs to be a link */}
+                    <Backdrop onClick={handleModalClose} />
+                    <SuccessModalJS
+                        header="SUCCESS"
+                        content="Your account has been created, Please use these credentials to log in"
+                        onClick={handleModalClose}
+                    />
+                </>
+            }
 
             <div className={classes.main}>
-                <form>
-                    <h4>Register Here</h4>
-                    <UsernameInput onChange={NameInputHandler} />
-                    <EmailInput onChange={EmailInputHandler} />
-                    <PasswordInput onChange={PasswordInputHandler} />
-                    <ConfirmPassword onChange={ConfirmPasswordInputHandler} />
-                    <button onClick={submitHandler} type='submit'>
-                        Register
-                    </button>
-                </form>
+                <h4>Register Here</h4>
+                <UsernameInput onChange={NameInputHandler} />
+                <EmailInput onChange={EmailInputHandler} />
+                <PasswordInput onChange={PasswordInputHandler} />
+                <ConfirmPassword onChange={ConfirmPasswordInputHandler} />
+                <button onClick={submitHandler} type='button'>
+                    Register
+                </button>
             </div>
         </Container>
     );
