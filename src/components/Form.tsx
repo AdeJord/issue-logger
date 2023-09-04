@@ -1,11 +1,13 @@
 import { useState } from "react";
 import RegInput from "./RegInput";
 import IssueInput from "./IssueInput";
+import SuccessModal from "./modals/SuccessModalJS";
 import Container from "@mui/material/Container";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
-
-declare var sendRequest: any
+import { useNavigate } from "react-router-dom";
+import Backdrop from '../navigation/Backdrop';
+import ErrorModalJS from './modals/ErrorModalJS'
 
 
 const useStyles = makeStyles({
@@ -44,7 +46,11 @@ const useStyles = makeStyles({
   },
 });
 
+
+
 const Form = () => {
+
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
@@ -61,7 +67,11 @@ const Form = () => {
 
   const [regNo, setRegNo] = useState<FormData | null>(null);
   const [issue, setIssue] = useState<FormData | null>(null);
-  const formData = [regNo, issue]
+  const [showSuccesModal, setShowSuccesModal] = useState<boolean>(false);
+  const [errorModalHeader, setErrorModalHeader] = useState<string | null>(null);
+  const [errorModalContent, setErrorModalContent] = useState<string | null>(null);
+  const [modals, setModals] = useState(0);
+
 
   const RegInputHandler = (e) => {
     setRegNo(e.currentTarget.value)
@@ -73,21 +83,51 @@ const Form = () => {
     // console.log({ issue })
   }
 
+  const successModalClickHandler = () => {  
+  
+    setShowSuccesModal(false)
+
+    // setRegNo(null)
+    // setIssue(null)  
+  }
+
+  const handleModalClose = () => {
+    setModals(0);
+    console.log('Close Clicked')
+  }
+
   const submitHandler = async (e) => {
 
-    e.preventDefault()
+    (e).preventDefault()
 
     const connString: any = process.env.REACT_APP_BACKEND_URL
-    
+
+    console.log('hit')
+
+    if (regNo === null) { //Check username completed
+      setErrorModalHeader('No Reg Number')
+      setErrorModalContent('Please enter a Reg Number.')
+      setModals(2)
+      return
+    }
+
+    if (issue === null) { //Check username completed
+      setErrorModalHeader('No Issue eneter')
+      setErrorModalContent('Please enter an issue')
+      setModals(2)
+      return
+    }
+
     try {
       // alert(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
       // console.log(`You have just submitted:- Reg - ${regNo}: Issue - ${issue}`)
-      const data = {regNo, issue}
+      setShowSuccesModal(true)
+      const data = { regNo, issue }
       const response = axios.post(connString + '/issues', data)
-      .then((response) => {
-        // console.log(response)
-        // console.log(response)
-      }).catch(err => console.log(err))
+        .then((response) => {
+          // console.log(response)
+          // console.log(response)
+        }).catch(err => console.log(err))
     }
     catch (err) {
       console.log(err)
@@ -100,6 +140,23 @@ const Form = () => {
       disableGutters={true}
       maxWidth="sm"
     >
+      {showSuccesModal &&
+        <SuccessModal 
+        header='Thank you for your submission!'
+        onClick={successModalClickHandler}
+        navTo='../pages/AllIssues'/>
+      }
+            {modals === 2 &&
+        <>
+          <Backdrop onClick={handleModalClose} />
+          <ErrorModalJS
+            header={errorModalHeader}
+            content={errorModalContent}
+            onClick={handleModalClose}
+          />
+        </>
+      }
+      {}
       <form>
         <h4>Registration Number</h4>
         <RegInput onChange={RegInputHandler} />

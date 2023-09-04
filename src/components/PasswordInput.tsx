@@ -5,17 +5,14 @@ import "../App.css";
 
 const useStyles = makeStyles({
   input: {
-    textTransform: "uppercase",
     color: "black",
-    fontFamily: "Charles Wright",
-    fontWeight: "700",
-    background: "yellow",
-    width: "160px",
+    width: "100%",
     height: "5vh",
     borderRadius: "8px",
     fontSize: "28px",
     textAlign: "center",
     marginBottom: "20px",
+    type: "password",
   },
 });
 
@@ -36,12 +33,12 @@ const PasswordInput = ( {onChange}, props: any) => {
 
   return (
     <div>
-      <TextField 
-      margin="normal"
-      variant="standard"
-      multiline={true} 
-      fullWidth={true}
-      rows={props.rows}
+      <input className={classes.input}
+      // margin="normal"
+      // variant="standard"
+      // multiline={true} 
+      // fullWidth={true}
+      // rows={props.rows}
       onChange={onChange}
       placeholder='Password'
       type="password"

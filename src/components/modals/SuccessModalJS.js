@@ -1,8 +1,7 @@
 import ReactDOM from "react-dom";
-import { MouseEvent } from "react";
 import { makeStyles } from "@mui/styles";
-// import Button from "./Button";
 import ButtonJS from "./ButtonJS";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   modalBackdrop: {
@@ -46,16 +45,23 @@ const useStyles = makeStyles({
 
 const SuccessModal = (props) => {
   const classes = useStyles();
+  const navigate = useNavigate();
+
+  const clickHandler = (e) => {
+    e.preventDefault();
+    navigate(props.navTo)
+  }
 
   const content = (
-    <div onClick={props.onClick}>
+    <div onClick={clickHandler}>
       <div className={classes.modalRoot}>
         <div className={classes.modalHeader}>
           <h3>{props.header}</h3>
         </div>
         <div className={classes.modalContent}>{props.content}</div>
         <div className={classes.modalFooter}>
-          <ButtonJS onClick={props.onClick} text="Continue to login" />
+          <ButtonJS onClick={clickHandler} 
+          text="OK" />
         </div>
       </div>
     </div>

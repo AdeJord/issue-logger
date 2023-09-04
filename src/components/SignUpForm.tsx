@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, useEffect } from "react";
 import PasswordInput from "./PasswordInput";
 import UsernameInput from "./UsernameInput";
 import EmailInput from "./EmailInput";
@@ -10,8 +10,7 @@ import ErrorModalJS from './modals/ErrorModalJS'
 import SuccessModalJS from "./modals/SuccessModalJS";
 import UseModal from "./Modal/Usemodal";
 import Backdrop from '../navigation/Backdrop';
-
-declare var sendRequest: any
+import { useNavigate } from "react-router-dom";
 
 
 const useStyles = makeStyles({
@@ -69,6 +68,18 @@ interface SignUpProps {
     props?: any
 }
 
+interface FormData {
+    name: string;
+    Password: string;
+    length: number
+    // prevState: null;
+    // id: string;
+    // placeholder: string;
+    // toUppercase: string;
+    // e: any
+    // value: string
+  }
+
 type UserType = {
     userName: string
     email: string
@@ -89,10 +100,57 @@ const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
     const [password, setPassword] = useState<FormData | null>(null);
     const [confirmPassword, setConfirmPassword] = useState<FormData | null>(null);
     const [email, setEmail] = useState<FormData | null>(null);
+    const [userData, setUserData] = useState<any[]>([])
+    const [errorModalHeader, setErrorModalHeader] = useState<string | null>(null);
+    const [errorModalContent, setErrorModalContent] = useState<string | null>(null);
     // const formData = [name, password, email]
     // const username = name
 
     // const [error, setError] = useState(true)
+
+    useEffect(() => {
+        const connString = process.env.REACT_APP_BACKEND_URL
+        const fecthData = async () => {
+          const response = await fetch(connString + '/users')
+          console.log(connString)
+          const data = await response.json();
+          setUserData(data)
+          console.log(userData)
+        }
+        fecthData()
+          .catch(console.error)
+      }, [])
+
+// CHECK IF EMAIL ALREADY EXISTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // check if email already exists
+      const checkCredentials = (username, email) => {
+        const userByUsername = userData.find(user => user.username === username);
+        const userByEmail = userData.find(user => user.email === email);
+      
+        if (userByUsername || userByEmail) {
+          console.log('User already exists'); //works but still wrong modal
+          
+          if (userByUsername) {
+            // Username already exists
+            setModals(2);
+            console.log('Username already exists');
+          }
+          
+          if (userByEmail) {
+            // Email already exists
+            setModals(2);
+            console.log('Email already exists'); //works but still wrong modal
+          }
+          
+          return false; // User already exists, return false.
+        } else {
+          console.log('User not found');
+          // setModal(3); // You can set a modal for "User not found" if needed.
+          return true; // User not found, can proceed.
+        }
+      };
+
+      //check if username already exists
 
     const NameInputHandler = (e) => {
         setUserName(e.currentTarget.value)
@@ -124,10 +182,58 @@ const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
 
         e.preventDefault()
         const connString: any = process.env.REACT_APP_BACKEND_URL
+        let regEx = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        checkCredentials(username, email)
+        //HASH PASSWORD HERE!!
+        
+        if (username === null) { //Check username completed
+            setErrorModalHeader('No Username')
+            setErrorModalContent('Please enter a username.')
+            setModals(2)
+            return
+          } 
+          if (username.length < 5) { //Check username length
+            setErrorModalHeader('Username is too short')
+            setErrorModalContent('Please enter a username with more than 5 characters.')
+            setModals(2)
+            return
+          } 
+          if (email === null) { //Check email completed
+            setErrorModalHeader('No Email Address')
+            setErrorModalContent('Please enter your email address.')
+            setModals(2)
+            return
+          } 
+          if (regEx.test(String(email)) === true) { //Check email is valid
+            setModals(1)
+          } else {
+            setErrorModalHeader('Not an email address.')
+            setErrorModalContent('Please enter a valid email address.')
+            setModals(2)
+            return
+          }
+          if (password === null) { //Check password completed
+            setErrorModalHeader('No Password')
+            setErrorModalContent('Please enter a password.')
+            setModals(2)
+            return
+          } 
+          if (password.length < 4) { //Check password length
+            setErrorModalHeader('Password Too Short')
+            setErrorModalContent('Please enter a password with at least 4 characters.')
+            setModals(2)
+            return
+          }
+          if (confirmPassword === null) { //Check confirmPassword completed
+            setErrorModalHeader('Password needs to be confirmed')
+            setErrorModalContent('Please confirm your password.')
+            setModals(2)
+            return
+          } 
 
-        //NEED TO CHECK ALL FIELDS ARE COMPLETED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          
         try {
-            if (password === confirmPassword) {
+            if (password === confirmPassword) { //Check passwords match
                 const data = { username, password, email }
                 const response = axios.post(connString + '/users', data)
                     .then((response) => {
@@ -136,10 +242,12 @@ const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
                     }).catch(err => console.log(err))
                 setModals(1)
                 console.log('Success')
+                // navigate('/pages/signin')
             } else {
                 setModals(2)
+                setErrorModalHeader('Paswwords Do Not Match')
+                setErrorModalContent('Which one do you want? They are different')
                 console.log('Error')
-
             }
         }
         catch (err) {
@@ -157,8 +265,8 @@ const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
                 <>
                     <Backdrop onClick={handleModalClose} />
                     <ErrorModalJS
-                        header="Passwords do not match."
-                        content="Which one do you want?  They are both different!  Try again..."
+                        header={errorModalHeader}
+                        content={errorModalContent}
                         onClick={handleModalClose}
                     />
                 </>
@@ -171,6 +279,7 @@ const SignUpForm: React.FC<SignUpProps> = (props: SignUpProps): JSX.Element => {
                         header="SUCCESS"
                         content="Your account has been created, Please use these credentials to log in"
                         onClick={handleModalClose}
+                        navTo = '/pages/Signin'
                     />
                 </>
             }

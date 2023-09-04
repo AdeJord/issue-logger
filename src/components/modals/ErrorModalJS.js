@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom";
-import { MouseEvent } from "react";
 import { makeStyles } from "@mui/styles";
 // import Button from "./Button";
 import ButtonJS from "./ButtonJS";
